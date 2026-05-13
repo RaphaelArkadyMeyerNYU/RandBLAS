@@ -31,6 +31,7 @@
 #include "RandBLAS/config.h"
 #include "RandBLAS/base.hh"
 #include <blas.hh>
+#include <numeric> // std::iota, used below
 
 #ifdef __cpp_concepts
 #include <concepts>
