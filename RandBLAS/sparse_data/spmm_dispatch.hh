@@ -31,6 +31,7 @@
 
 #include "RandBLAS/base.hh"
 #include "RandBLAS/exceptions.hh"
+#include "RandBLAS/util.hh"
 #include "RandBLAS/sparse_data/base.hh"
 #include "RandBLAS/sparse_data/coo_matrix.hh"
 #include "RandBLAS/sparse_data/csr_matrix.hh"
@@ -125,14 +126,11 @@ void left_spmm(
     if (layout == Layout::ColMajor) {
         randblas_require(ldb >= rows_B);
         randblas_require(ldc >= d);
-        for (int64_t i = 0; i < n; ++i)
-            RandBLAS::util::safe_scal(d, beta, &C[i*ldc]);
     } else {
         randblas_require(ldc >= n);
         randblas_require(ldb >= cols_B);
-        for (int64_t i = 0; i < d; ++i)
-            RandBLAS::util::safe_scal(n, beta, &C[i*ldc]);
     }
+    RandBLAS::util::lascl(layout, d, n, beta, C, ldc);
 
     if (alpha == (T) 0)
         return;
